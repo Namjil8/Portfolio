@@ -15,6 +15,7 @@
     --ink: #111111;
     --muted: #6E6E6E;
     --line: #E4E4E1;
+    --crimson: linear-gradient(160deg, #B7194A 0%, #A21741 45%, #620E26 100%);
     --font: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
     --pad: clamp(16px, 4vw, 64px);
   }
@@ -111,14 +112,15 @@
   .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
   .card { display: block; text-decoration: none; }
   .cover {
-    aspect-ratio: 16 / 10; border-radius: 16px; overflow: hidden;
-    background: var(--tint, var(--surface));
+    aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden;
+    background: var(--crimson);
     display: grid; place-items: center;
-    color: rgba(0,0,0,.3); font-size: 14px;
+    color: rgba(255,255,255,.45); font-size: 14px;
     transition: transform .4s ease;
   }
   .card:hover .cover { transform: scale(.985); }
   .cover img { width: 100%; height: 100%; object-fit: cover; }
+  .cover img.fit { object-fit: contain; padding: 6% 8% 0; object-position: bottom; }
   .card h4 { margin-top: 16px; font-size: clamp(22px, 2vw, 30px); font-weight: 400; letter-spacing: -0.015em; }
   .card h4 span { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 5px; }
   .card p { color: var(--muted); margin-top: 4px; }
@@ -156,7 +158,7 @@
     <a href="#about">About</a>
     <a href="cv.pdf" target="_blank">CV</a>
     <a href="https://www.linkedin.com/" target="_blank">LinkedIn</a>
-    <a class="cta" href="mailto:hello@namdzhil-khartskhaeva.com">Email</a>
+    <a class="cta" href="mailto:nkhartskhaeva@gmail.com">Email</a>
   </nav>
 </header>
 
@@ -184,6 +186,8 @@
       <li><a href="#skillbox"><span>Skillbox English</span>↓</a></li>
       <li><a href="#ozon"><span>Ozon App</span>↓</a></li>
       <li><a href="#tsum"><span>TSUM B2B apps</span>↓</a></li>
+      <li><a href="#pet"><span>Pet projects</span>↓</a></li>
+      <li><a href="#branding"><span>Branding Kalmykia</span>↓</a></li>
       <li><a href="#about"><span>About me</span>↓</a></li>
     </ul>
 
@@ -197,11 +201,11 @@
       <div class="job-meta"><h3>QIC</h3><span>2024–2026</span></div>
       <div class="cards">
         <a class="card" href="cases/qic-app.html">
-          <div class="cover" style="--tint:#F3ECEE">Cover image</div>
+          <div class="cover"><img src="images/qic-app.jpg" alt="QIC App: Insurance 360 and City screens"></div>
           <h4><span>QIC App</span> ↗</h4><p>Insurance super app · Product design</p>
         </a>
         <a class="card" href="cases/qic-online-market.html">
-          <div class="cover" style="--tint:#F3ECEE">Cover image</div>
+          <div class="cover"><img src="images/qic-market.jpg" alt="qic.online market landing page"></div>
           <h4><span>qic.online market</span> ↗</h4><p>Marketplace · Product design</p>
         </a>
       </div>
@@ -211,7 +215,7 @@
       <div class="job-meta"><h3>Skillbox</h3><span>2023–2024</span></div>
       <div class="cards">
         <a class="card" href="cases/skillbox-english.html">
-          <div class="cover" style="--tint:#EDEDF8">Cover image</div>
+          <div class="cover"><img src="images/skillbox-english.jpg" alt="Skillbox English video lesson interface" loading="lazy"></div>
           <h4><span>Skillbox English</span> ↗</h4><p>EdTech · Product design</p>
         </a>
       </div>
@@ -221,7 +225,7 @@
       <div class="job-meta"><h3>Ozon</h3><span>2019–2022</span></div>
       <div class="cards">
         <a class="card" href="cases/ozon-app.html">
-          <div class="cover" style="--tint:#ECF0F8">Cover image</div>
+          <div class="cover"><img src="images/ozon-app.jpg" alt="Ozon app screens" loading="lazy"></div>
           <h4><span>Ozon App</span> ↗</h4><p>E-commerce · Product design</p>
         </a>
       </div>
@@ -231,8 +235,32 @@
       <div class="job-meta"><h3>TSUM</h3><span>2018–2019</span></div>
       <div class="cards">
         <a class="card" href="cases/tsum-b2b.html">
-          <div class="cover" style="--tint:#F6EEEA">Cover image</div>
+          <div class="cover"><img src="images/tsum-b2b.jpg" alt="TSUM Moscow cover" loading="lazy"></div>
           <h4><span>B2B apps</span> ↗</h4><p>Retail · Internal tools</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="job" id="pet">
+      <div class="job-meta"><h3>Pet projects</h3><span>Side work</span></div>
+      <div class="cards">
+        <a class="card" href="cases/clean-fight.html">
+          <div class="cover"><img src="images/clean-fight.gif" alt="Clean Fight character" loading="lazy"></div>
+          <h4><span>Clean Fight</span> ↗</h4><p>Pet project · Product design</p>
+        </a>
+        <a class="card" href="cases/khalmg-keln.html">
+          <div class="cover"><img src="images/khalmg-keln.jpg" alt="Khalmg Keln app: translator and alphabet screens" loading="lazy"></div>
+          <h4><span>Khalmg Keln App</span> ↗</h4><p>Kalmyk language app · Pet project</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="job" id="branding">
+      <div class="job-meta"><h3>Branding</h3><span>Identity</span></div>
+      <div class="cards">
+        <a class="card" href="cases/branding-kalmykia.html">
+          <div class="cover"><img src="images/branding-kalmykia.jpg" alt="Kalmykia branding: giant red tulip in the steppe" loading="lazy"></div>
+          <h4><span>Kalmykia</span> ↗</h4><p>Brand identity</p>
         </a>
       </div>
     </div>
@@ -246,7 +274,7 @@
         <p>Short text about you: how you work, what you care about, what kind of team or product you’re looking for next.</p>
         <p>Second paragraph: background, tools, research, design systems — whatever best describes your approach.</p>
         <div class="contact-list">
-          <a class="u" href="mailto:hello@namdzhil-khartskhaeva.com">hello@namdzhil-khartskhaeva.com</a>
+          <a class="u" href="mailto:nkhartskhaeva@gmail.com">nkhartskhaeva@gmail.com</a>
           <span>Belgrade, Serbia</span>
           <a class="u" href="cv.pdf" target="_blank">Download CV (PDF)</a>
         </div>
@@ -259,7 +287,7 @@
   <nav>
     <a class="u" href="https://www.linkedin.com/" target="_blank">LinkedIn</a><span class="sep">/</span>
     <a class="u" href="cv.pdf" target="_blank">CV</a><span class="sep">/</span>
-    <a class="u" href="mailto:hello@namdzhil-khartskhaeva.com">Email</a>
+    <a class="u" href="mailto:nkhartskhaeva@gmail.com">Email</a>
   </nav>
   <span>© 2026 Namdzhil Khartskhaeva</span>
 </footer>
