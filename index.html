@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Namdzhil Khartskhaeva — Product Designer</title>
+<meta name="description" content="Product Designer with 8 years' experience designing complex B2B and B2C digital products. Based in Belgrade.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --surface: #F4F4F2;
+    --ink: #111111;
+    --muted: #6E6E6E;
+    --line: #E4E4E1;
+    --font: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+    --pad: clamp(16px, 4vw, 64px);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: 18px;
+    line-height: 1.45;
+    letter-spacing: -0.005em;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: inherit; }
+  img { display: block; max-width: 100%; }
+
+  .u {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: opacity .2s;
+  }
+  .u:hover { opacity: .55; }
+
+  /* ---------- Floating navbar ---------- */
+  .navbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    padding: 12px var(--pad);
+    background: rgba(255,255,255,.75);
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    border-bottom: 1px solid rgba(0,0,0,.06);
+    transition: transform .35s ease;
+  }
+  .navbar.hidden { transform: translateY(-100%); }
+  .navbar .logo { text-decoration: none; font-weight: 500; font-size: 18px; }
+  .navbar nav { display: flex; align-items: center; gap: clamp(4px, 1.5vw, 12px); }
+  .navbar nav a { text-decoration: none; font-size: 16px; padding: 8px 12px; border-radius: 999px; transition: background .2s; }
+  .navbar nav a:hover { background: rgba(0,0,0,.06); }
+  .navbar nav a.cta { background: var(--ink); color: #fff; padding: 8px 18px; }
+  .navbar nav a.cta:hover { background: #333; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    padding: clamp(120px, 16vh, 150px) var(--pad) 64px;
+  }
+  .hello { font-size: clamp(18px, 1.9vw, 26px); font-weight: 300; line-height: 1.35; }
+  .statement {
+    position: relative; z-index: 1;
+    max-width: 1100px;
+    margin-top: clamp(32px, 6vh, 56px);
+    font-size: clamp(30px, 3.9vw, 56px);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  .hello, .jump { position: relative; z-index: 1; }
+  .jump {
+    list-style: none;
+    margin-top: clamp(40px, 7vh, 64px);
+    display: grid; gap: 10px;
+    font-size: clamp(18px, 1.9vw, 26px); font-weight: 300;
+  }
+  .jump a { text-decoration: none; }
+  .jump a span { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+  .jump a:hover { opacity: .55; }
+
+  .ornament {
+    position: absolute; right: -4%; bottom: 0;
+    width: clamp(400px, 56vw, 1000px); aspect-ratio: 1;
+    pointer-events: none;
+  }
+  .ornament canvas { position: relative; width: 100% !important; height: 100% !important; display: block; }
+
+  /* ---------- Sections ---------- */
+  section { padding: clamp(64px, 12vh, 140px) var(--pad); }
+  .label {
+    font-size: clamp(18px, 1.9vw, 26px); font-weight: 300; color: var(--muted);
+    margin-bottom: clamp(28px, 5vh, 48px);
+  }
+
+  /* ---------- Work ---------- */
+  .job {
+    display: grid; grid-template-columns: 240px 1fr; gap: 32px;
+    padding: 48px 0; border-top: 1px solid var(--line);
+  }
+  .job-meta h3 { font-size: 24px; font-weight: 500; letter-spacing: -0.01em; }
+  .job-meta span { color: var(--muted); }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+  .card { display: block; text-decoration: none; }
+  .cover {
+    aspect-ratio: 16 / 10; border-radius: 16px; overflow: hidden;
+    background: var(--tint, var(--surface));
+    display: grid; place-items: center;
+    color: rgba(0,0,0,.3); font-size: 14px;
+    transition: transform .4s ease;
+  }
+  .card:hover .cover { transform: scale(.985); }
+  .cover img { width: 100%; height: 100%; object-fit: cover; }
+  .card h4 { margin-top: 16px; font-size: clamp(22px, 2vw, 30px); font-weight: 400; letter-spacing: -0.015em; }
+  .card h4 span { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 5px; }
+  .card p { color: var(--muted); margin-top: 4px; }
+
+  /* ---------- About ---------- */
+  .about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(32px, 6vw, 96px); }
+  .about-lead { font-size: clamp(28px, 3.2vw, 48px); line-height: 1.2; letter-spacing: -0.02em; }
+  .about-text p + p { margin-top: 1em; }
+  .contact-list { margin-top: 32px; display: grid; gap: 4px; }
+
+  footer {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px;
+    padding: 32px var(--pad) 40px; border-top: 1px solid var(--line);
+  }
+  footer nav { display: flex; flex-wrap: wrap; gap: 8px 14px; }
+  footer .sep { color: var(--muted); }
+
+  @media (max-width: 760px) {
+    .navbar { padding: 8px var(--pad); }
+    .navbar .logo { font-size: 15px; white-space: nowrap; }
+    .navbar nav a:not(.cta):not(.keep) { display: none; }
+    .ornament { position: relative; right: auto; bottom: auto; margin: 24px -8vw 0; width: 116vw; }
+    .job, .about-grid { grid-template-columns: 1fr; }
+    .job { gap: 20px; }
+    .cards { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <a class="logo" href="#">Namdzhil Khartskhaeva</a>
+  <nav>
+    <a class="keep" href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="cv.pdf" target="_blank">CV</a>
+    <a href="https://www.linkedin.com/" target="_blank">LinkedIn</a>
+    <a class="cta" href="mailto:hello@namdzhil-khartskhaeva.com">Email</a>
+  </nav>
+</header>
+
+<script>
+  // Hide navbar on scroll down, show on scroll up
+  (() => {
+    const bar = document.querySelector('.navbar');
+    let last = window.scrollY;
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      bar.classList.toggle('hidden', y > last && y > 200);
+      last = y;
+    }, { passive: true });
+  })();
+</script>
+
+<main>
+  <section class="hero" aria-label="Intro">
+    <p class="hello">Hi, I'm Namdzhil Khartskhaeva,<br>Product Designer based in Belgrade</p>
+
+    <p class="statement">Designing complex B2B and B2C digital products for 8 years across e-commerce, marketplaces, insurance, and super apps. Previously at QIC, Skillbox, Ozon and TSUM. Open for work.</p>
+
+    <ul class="jump">
+      <li><a href="#qic"><span>Work (QIC)</span>↓</a></li>
+      <li><a href="#skillbox"><span>Skillbox English</span>↓</a></li>
+      <li><a href="#ozon"><span>Ozon App</span>↓</a></li>
+      <li><a href="#tsum"><span>TSUM B2B apps</span>↓</a></li>
+      <li><a href="#about"><span>About me</span>↓</a></li>
+    </ul>
+
+    <div class="ornament" aria-hidden="true"></div>
+  </section>
+
+  <section id="work">
+    <p class="label">Selected work, 2018–2026</p>
+
+    <div class="job" id="qic">
+      <div class="job-meta"><h3>QIC</h3><span>2024–2026</span></div>
+      <div class="cards">
+        <a class="card" href="cases/qic-app.html">
+          <div class="cover" style="--tint:#F3ECEE">Cover image</div>
+          <h4><span>QIC App</span> ↗</h4><p>Insurance super app · Product design</p>
+        </a>
+        <a class="card" href="cases/qic-online-market.html">
+          <div class="cover" style="--tint:#F3ECEE">Cover image</div>
+          <h4><span>qic.online market</span> ↗</h4><p>Marketplace · Product design</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="job" id="skillbox">
+      <div class="job-meta"><h3>Skillbox</h3><span>2023–2024</span></div>
+      <div class="cards">
+        <a class="card" href="cases/skillbox-english.html">
+          <div class="cover" style="--tint:#EDEDF8">Cover image</div>
+          <h4><span>Skillbox English</span> ↗</h4><p>EdTech · Product design</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="job" id="ozon">
+      <div class="job-meta"><h3>Ozon</h3><span>2019–2022</span></div>
+      <div class="cards">
+        <a class="card" href="cases/ozon-app.html">
+          <div class="cover" style="--tint:#ECF0F8">Cover image</div>
+          <h4><span>Ozon App</span> ↗</h4><p>E-commerce · Product design</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="job" id="tsum">
+      <div class="job-meta"><h3>TSUM</h3><span>2018–2019</span></div>
+      <div class="cards">
+        <a class="card" href="cases/tsum-b2b.html">
+          <div class="cover" style="--tint:#F6EEEA">Cover image</div>
+          <h4><span>B2B apps</span> ↗</h4><p>Retail · Internal tools</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <p class="label">About me</p>
+    <div class="about-grid">
+      <p class="about-lead">I design products that make complex things feel simple.</p>
+      <div class="about-text">
+        <p>Short text about you: how you work, what you care about, what kind of team or product you’re looking for next.</p>
+        <p>Second paragraph: background, tools, research, design systems — whatever best describes your approach.</p>
+        <div class="contact-list">
+          <a class="u" href="mailto:hello@namdzhil-khartskhaeva.com">hello@namdzhil-khartskhaeva.com</a>
+          <span>Belgrade, Serbia</span>
+          <a class="u" href="cv.pdf" target="_blank">Download CV (PDF)</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <nav>
+    <a class="u" href="https://www.linkedin.com/" target="_blank">LinkedIn</a><span class="sep">/</span>
+    <a class="u" href="cv.pdf" target="_blank">CV</a><span class="sep">/</span>
+    <a class="u" href="mailto:hello@namdzhil-khartskhaeva.com">Email</a>
+  </nav>
+  <span>© 2026 Namdzhil Khartskhaeva</span>
+</footer>
+
+<!-- 3D chrome ornament -->
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+  import * as THREE from 'three';
+
+  // Ornament ⇄ sphere morph, rendered with a ray-marched signed distance field.
+  // Blending two distance fields gives a real liquid transformation (holes close, shape inflates),
+  // which isn't possible by just swapping meshes.
+
+  const box = document.querySelector('.ornament');
+  const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  renderer.setClearColor(0x000000, 0);
+  box.appendChild(renderer.domElement);
+
+  // ---------- Studio environments (equirect canvases) ----------
+  const makeEnv = (stops, strips, whites) => {
+    const c = document.createElement('canvas');
+    c.width = 1024; c.height = 512;
+    const ctx = c.getContext('2d');
+    const g = ctx.createLinearGradient(0, 0, 0, 512);
+    stops.forEach(([s, col]) => g.addColorStop(s, col));
+    ctx.fillStyle = g; ctx.fillRect(0, 0, 1024, 512);
+    ctx.filter = 'blur(18px)';
+    strips.forEach(([col, x, w]) => { ctx.fillStyle = col; ctx.fillRect(x, 90, w, 320); });
+    ctx.fillStyle = '#ffffff';
+    whites.forEach(([x, w]) => ctx.fillRect(x, 60, w, 300));
+    const tex = new THREE.CanvasTexture(c);
+    tex.generateMipmaps = false;
+    tex.minFilter = THREE.LinearFilter;
+    tex.wrapS = THREE.RepeatWrapping;
+    return tex;
+  };
+
+  // A) Liquid chrome: white / steel-grey bands with crisp highlights
+  const chromeEnv = makeEnv(
+    [[0, '#ffffff'], [0.14, '#eef1f5'], [0.26, '#5c626b'], [0.34, '#e6eaef'],
+     [0.46, '#ffffff'], [0.55, '#33373e'], [0.63, '#b8bfc8'], [0.74, '#f8f9fb'],
+     [0.84, '#6a717a'], [1, '#dde2e8']],
+    [['rgba(40,44,50,.75)', 300, 70], ['rgba(40,44,50,.7)', 620, 50], ['rgba(40,44,50,.7)', 930, 60]],
+    [[120, 80], [470, 60], [760, 110]]
+  );
+  // B) Vivid holographic: pink → violet → lilac → cyan → sky-blue
+  const holoEnv = makeEnv(
+    [[0, '#ffd6f5'], [0.12, '#f07ad8'], [0.24, '#b77bff'], [0.34, '#e9d9ff'],
+     [0.44, '#7fd8ff'], [0.52, '#ffffff'], [0.6, '#9db4ff'], [0.7, '#ff8fd0'],
+     [0.8, '#c59bff'], [0.9, '#8ef0f0'], [1, '#ffe3f7']],
+    [['rgba(255,90,200,.9)', 260, 90], ['rgba(140,90,255,.9)', 560, 80],
+     ['rgba(70,210,255,.85)', 860, 80], ['rgba(255,120,220,.8)', 20, 70],
+     ['rgba(110,150,255,.85)', 690, 50]],
+    [[150, 60], [460, 50], [780, 60]]
+  );
+
+  const uniforms = {
+    uRes:   { value: new THREE.Vector2(1, 1) },
+    uR:     { value: new THREE.Matrix3() },
+    uRi:    { value: new THREE.Matrix3() },
+    uMorph: { value: 0 },
+    uMix:   { value: 0 },
+    uTime:  { value: 0 },
+    uLift:  { value: 0 },
+    uEnvA:  { value: chromeEnv },
+    uEnvB:  { value: holoEnv }
+  };
+
+  const material = new THREE.ShaderMaterial({
+    uniforms,
+    blending: THREE.NoBlending,
+    depthTest: false, depthWrite: false,
+    vertexShader: `void main(){ gl_Position = vec4(position.xy, 0.0, 1.0); }`,
+    fragmentShader: `
+      precision highp float;
+      uniform vec2 uRes;
+      uniform mat3 uR, uRi;
+      uniform float uMorph, uMix, uTime, uLift;
+      uniform sampler2D uEnvA, uEnvB;
+
+      const float T  = 0.20;   // tube thickness
+      const float RR = 0.50;   // ring radius
+      const float RS = 1.55;   // sphere radius
+
+      float smin(float a, float b, float k){
+        float h = clamp(0.5 + 0.5*(b - a)/k, 0.0, 1.0);
+        return mix(b, a, h) - k*h*(1.0 - h);
+      }
+      float sdCap(vec3 p, vec3 a, vec3 b, float r){
+        vec3 pa = p - a, ba = b - a;
+        float h = clamp(dot(pa, ba)/dot(ba, ba), 0.0, 1.0);
+        return length(pa - ba*h) - r;
+      }
+      float sdRing(vec3 p, vec2 c, float R, float r){
+        vec2 q = vec2(length(p.xy - c) - R, p.z);
+        return length(q) - r;
+      }
+      // The ornament is 8-fold symmetric, so fold space and draw one eighth of it
+      float ornament(vec3 p){
+        vec2 q = abs(p.xy);
+        if (q.y > q.x) q = q.yx;
+        vec3 f = vec3(q, p.z);
+        float k = 0.12;                                                   // liquid joints
+        float d = sdCap(f, vec3(0.0, 1.0, 0.0), vec3(1.0, 0.0, 0.0), T);  // outer diamond edge
+        d = smin(d, sdCap(f, vec3(0.0), vec3(0.5, 0.5, 0.0), T), k);      // inner cross
+        d = smin(d, sdRing(f, vec2(1.0 + RR, 0.0), RR, T), k);            // ring at the tip
+        return d;
+      }
+      float map(vec3 p){
+        float d = mix(ornament(p), length(p) - RS, uMorph);
+        // liquid wobble only while transforming
+        float w = uMorph*(1.0 - uMorph);
+        d += w*0.22*sin(4.0*p.x + uTime*3.0)*sin(4.0*p.y - uTime*2.0)*sin(4.0*p.z + uTime*2.5);
+        return d;
+      }
+      vec3 calcNormal(vec3 p){
+        const vec2 e = vec2(1.0, -1.0)*0.0015;
+        return normalize(e.xyy*map(p + e.xyy) + e.yyx*map(p + e.yyx) +
+                         e.yxy*map(p + e.yxy) + e.xxx*map(p + e.xxx));
+      }
+      vec3 env(sampler2D s, vec3 r){
+        vec2 uv = vec2(atan(r.z, r.x)/6.28318 + 0.5, 1.0 - acos(clamp(r.y, -1.0, 1.0))/3.14159);
+        return texture2D(s, uv).rgb;
+      }
+
+      void main(){
+        const float tanHalf = 0.26795;               // tan(15°): 30° field of view
+        vec2 uv = (gl_FragCoord.xy - 0.5*uRes)/uRes.y;
+        vec3 ro = vec3(0.0, -uLift, 10.0);
+        vec3 rd = normalize(vec3(uv*2.0*tanHalf, -1.0));
+        vec3 o = uRi*ro, d = uRi*rd;                 // ray in object space
+
+        // bounding sphere: skip empty pixels
+        float b = dot(o, d), c = dot(o, o) - 2.45*2.45, h = b*b - c;
+        if (h < 0.0) { gl_FragColor = vec4(0.0); return; }
+        h = sqrt(h);
+        float t = max(-b - h, 0.0), tEnd = -b + h;
+
+        float pix = 2.0*tanHalf/uRes.y;              // pixel footprint per unit distance
+        float best = 1e9, tBest = t;
+        bool hit = false;
+        for (int i = 0; i < 110; i++){
+          float dist = map(o + d*t);
+          float ratio = dist/(pix*t);
+          if (ratio < best){ best = ratio; tBest = t; }
+          if (dist < 0.0006*t){ hit = true; tBest = t; break; }
+          t += dist*0.85;
+          if (t > tEnd) break;
+        }
+        float alpha = hit ? 1.0 : clamp(1.0 - best, 0.0, 1.0);   // soft anti-aliased edge
+        if (alpha <= 0.0) { gl_FragColor = vec4(0.0); return; }
+
+        vec3 p  = o + d*tBest;
+        vec3 n  = calcNormal(p);
+        vec3 nw = uR*n;                              // normal back in world space
+        vec3 rw = reflect(rd, nw);
+        float fres = pow(1.0 - max(dot(nw, -rd), 0.0), 3.0);
+
+        vec3 chrome = env(uEnvA, rw)*vec3(0.96, 0.97, 0.99);
+        vec3 holoEnv = env(uEnvB, rw);
+        vec3 iri = 0.5 + 0.5*cos(6.28318*(fres*1.2 + dot(n, vec3(0.35, 0.5, 0.25))*0.6
+                                          + uTime*0.05 + vec3(0.0, 0.33, 0.67)));
+        vec3 holo = mix(holoEnv, holoEnv*0.6 + iri*0.55, 0.4);
+
+        vec3 col = mix(chrome, holo, uMix);
+        col += fres*0.18;                                              // glossy rim
+        col += pow(max(dot(rw, normalize(vec3(0.4, 0.6, 0.7))), 0.0), 60.0)*0.6;  // specular kick
+        col = min(col, vec3(1.0));
+        gl_FragColor = vec4(col*alpha, alpha);       // premultiplied alpha
+      }`
+  });
+
+  const scene = new THREE.Scene();
+  scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material));
+  const cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+  const size = new THREE.Vector2();
+  const resize = () => {
+    renderer.setSize(box.clientWidth, box.clientHeight, false);
+    renderer.getDrawingBufferSize(size);
+    uniforms.uRes.value.copy(size);
+  };
+  new ResizeObserver(resize).observe(box);
+  resize();
+
+  // Pause rendering while the ornament is scrolled out of view
+  let visible = true;
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(box);
+
+  const slow = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const speed = slow ? 0.15 : 0.55;
+  const smooth = (a, b, x) => { const k = Math.min(Math.max((x - a)/(b - a), 0), 1); return k*k*(3 - 2*k); };
+  const euler = new THREE.Euler(), m4 = new THREE.Matrix4();
+  const clock = new THREE.Clock();
+
+  renderer.setAnimationLoop(() => {
+    if (!visible) return;
+    const t = clock.getElapsedTime();
+    const angle = t * speed;
+    const phase = angle % (Math.PI * 2);
+
+    euler.set(Math.sin(t * 0.4) * 0.12, angle, 0);
+    m4.makeRotationFromEuler(euler);
+    uniforms.uR.value.setFromMatrix4(m4);
+    uniforms.uRi.value.copy(uniforms.uR.value).transpose();
+    uniforms.uLift.value = Math.sin(t * 0.8) * 0.06;
+    uniforms.uTime.value = t;
+
+    // Silver facing front → holographic after half a turn → back to silver
+    const mix = 0.5 - 0.5 * Math.cos(angle);
+    uniforms.uMix.value = mix * mix * (3 - 2 * mix);
+
+    // Once per turn: melt into a sphere around the half-turn, then back into the ornament
+    const P = Math.PI;
+    uniforms.uMorph.value = smooth(0.55 * P, 0.85 * P, phase) * (1 - smooth(1.15 * P, 1.45 * P, phase));
+
+    renderer.render(scene, cam);
+  });
+</script>
+
+</body>
+</html>
