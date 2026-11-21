@@ -130,6 +130,74 @@
   .about-lead { font-size: clamp(28px, 3.2vw, 48px); line-height: 1.2; letter-spacing: -0.02em; }
   .about-text p + p { margin-top: 1em; }
   .contact-list { margin-top: 32px; display: grid; gap: 4px; }
+  /* ---------- Tinder-style fact cards ---------- */
+  .deck {
+    position: relative; list-style: none;
+    height: clamp(260px, 26vw, 320px);
+    margin-bottom: 8px;
+    touch-action: pan-y; user-select: none; -webkit-user-select: none;
+    outline: none;
+  }
+  .tcard {
+    position: absolute; inset: 0 0 28px 0;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: clamp(22px, 2.4vw, 32px);
+    border-radius: 24px;
+    background: var(--bg-card, #fff);
+    color: var(--fg-card, var(--ink));
+    border: 1px solid var(--line);
+    box-shadow: 0 18px 40px -24px rgba(0,0,0,.35);
+    cursor: grab;
+    transition: transform .45s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
+    will-change: transform;
+  }
+  .tcard.dragging { transition: none; cursor: grabbing; }
+  .tcard.c-orange { --bg-card: #DC3F0F; --fg-card: #fff; border-color: transparent; }
+  .tcard.c-blue   { --bg-card: #005BFF; --fg-card: #fff; border-color: transparent; }
+  /* Glowing pearl: soft nacre gradient that slowly shifts, plus a light sweep */
+  .tcard.c-pearl {
+    --fg-card: #1a1a1a;
+    background: linear-gradient(125deg, #FFFFFF 0%, #F3EAFF 22%, #E4F4FF 42%, #FFF0F7 62%, #EEFFF8 80%, #FFFFFF 100%);
+    background-size: 300% 300%;
+    border-color: rgba(255,255,255,.9);
+    box-shadow: 0 18px 40px -24px rgba(120,90,160,.45), inset 0 0 0 1px rgba(255,255,255,.7), inset 0 0 40px rgba(255,255,255,.8);
+    overflow: hidden;
+    animation: nacre 6s ease-in-out infinite;
+  }
+  .tcard.c-pearl::after {
+    content: ""; position: absolute; inset: -40%;
+    background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,.85) 50%, transparent 60%);
+    animation: sheen 3.2s ease-in-out infinite;
+    pointer-events: none;
+  }
+  /* Doodle card: dense black-and-white cartoon doodle, text on white stickers */
+  .tcard.c-doodle {
+    --fg-card: #111;
+    background: #fff; border: 2px solid #111; overflow: hidden;
+    align-items: flex-start;
+  }
+  .doodle-art { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .tcard.c-doodle .sticker {
+    position: relative; z-index: 1;
+    background: #fff; border: 2px solid #111; border-radius: 999px;
+    padding: 4px 12px; opacity: 1;
+  }
+  .tcard.c-doodle { justify-content: flex-end; gap: 8px; }
+  .tcard.c-doodle .tlabel.sticker { position: absolute; top: clamp(16px, 1.8vw, 22px); left: clamp(16px, 1.8vw, 22px); }
+  .tcard.c-doodle .tcount.sticker { position: absolute; top: clamp(16px, 1.8vw, 22px); right: clamp(16px, 1.8vw, 22px); }
+  .tcard.c-doodle .tvalue.sticker {
+    border-radius: 14px; padding: 8px 14px; max-width: 92%;
+    font-size: clamp(16px, 1.4vw, 19px); line-height: 1.25;
+    box-shadow: 3px 3px 0 #111;
+  }
+  @keyframes nacre { 50% { background-position: 100% 100%; } }
+  @keyframes sheen { 0% { transform: translateX(-60%); } 60%, 100% { transform: translateX(60%); } }
+  @media (prefers-reduced-motion: reduce) { .tcard.c-pearl, .tcard.c-pearl::after { animation: none; } }
+  .tlabel { font-size: 15px; text-transform: uppercase; letter-spacing: .08em; opacity: .7; }
+  .tvalue { font-size: clamp(24px, 2.4vw, 34px); line-height: 1.15; letter-spacing: -0.02em; }
+  .tcount { font-size: 14px; opacity: .55; }
+  .deck-hint { color: var(--muted); font-size: 14px; }
+  .deck:focus-visible .tcard[data-pos="0"] { outline: 2px solid var(--ink); outline-offset: 4px; }
 
   footer {
     display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px;
@@ -156,8 +224,8 @@
   <nav>
     <a class="keep" href="#work">Work</a>
     <a href="#about">About</a>
-    <a href="cv.pdf" target="_blank">CV</a>
-    <a href="https://www.linkedin.com/" target="_blank">LinkedIn</a>
+    <a href="https://drive.google.com/file/d/1PxZ1Kvq5GiTxxw7GSG7w4yAlLsjGhA7I/view" target="_blank">CV</a>
+    <a href="https://www.linkedin.com/in/namdzhil-khartskhaeva" target="_blank">LinkedIn</a>
     <a class="cta" href="mailto:nkhartskhaeva@gmail.com">Email</a>
   </nav>
 </header>
@@ -271,12 +339,87 @@
     <div class="about-grid">
       <p class="about-lead">I design products that make complex things feel simple.</p>
       <div class="about-text">
-        <p>Short text about you: how you work, what you care about, what kind of team or product you’re looking for next.</p>
-        <p>Second paragraph: background, tools, research, design systems — whatever best describes your approach.</p>
+        <ul class="deck" tabindex="0" aria-label="About me facts. Swipe, tap or use arrow keys to flip through.">
+          <li class="tcard c-orange" data-i="0"><span class="tlabel">Experience</span><p class="tvalue">8+ years in B2B and B2C product design</p><span class="tcount">01 / 08</span></li>
+          <li class="tcard c-pearl" data-i="1"><span class="tlabel">Domains</span><p class="tvalue">E-commerce, marketplaces, fintech, insurance, super apps</p><span class="tcount">02 / 08</span></li>
+          <li class="tcard c-blue" data-i="2"><span class="tlabel">QIC Market</span><p class="tvalue">35K monthly users, 3,000+ vehicle listings</p><span class="tcount">03 / 08</span></li>
+          <li class="tcard c-orange" data-i="3"><span class="tlabel">Ozon</span><p class="tvalue">−25% checkout time, −11% basket abandonment</p><span class="tcount">04 / 08</span></li>
+          <li class="tcard c-blue" data-i="4"><span class="tlabel">Skillbox</span><p class="tvalue">300% faster teacher matching</p><span class="tcount">05 / 08</span></li>
+          <li class="tcard c-pearl" data-i="5"><span class="tlabel">Process</span><p class="tvalue">Research → prototyping → design systems → handoff</p><span class="tcount">06 / 08</span></li>
+          <li class="tcard c-orange" data-i="6"><span class="tlabel">Languages</span><p class="tvalue">English, Russian, Mongolian</p><span class="tcount">07 / 08</span></li>
+          <li class="tcard c-doodle" data-i="7">
+            <svg class="doodle-art" viewBox="0 0 600 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <g fill="#fff" stroke="#111" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- flowing ribbon -->
+    <g fill="none">
+      <path d="M-20 238 C110 180 200 300 330 225 S520 110 640 150"/>
+      <path d="M-20 254 C110 196 200 316 330 241 S520 126 640 166"/>
+      <path d="M-20 270 C110 212 200 332 330 257 S520 142 640 182"/>
+    </g>
+    <!-- little clouds -->
+    <path d="M18 70 c-14 0-14-20 0-20 c2-14 24-14 26 0 c14-2 16 20 0 20 Z"/>
+    <path d="M500 312 c-22 0-22-30 0-30 c4-22 38-22 42 0 c20-4 26 30 2 30 Z"/>
+    <path d="M560 236 c-14 0-14-20 0-20 c2-14 24-14 26 0 c14-2 16 20 0 20 Z"/>
+    <!-- pine tree buddy -->
+    <path d="M75 40 L110 100 L95 100 L125 160 L105 160 L135 225 L15 225 L45 160 L25 160 L55 100 L40 100 Z"/>
+    <rect x="65" y="225" width="20" height="32" rx="3"/>
+    <circle cx="62" cy="150" r="10"/><circle cx="64" cy="152" r="4.5" fill="#111" stroke="none"/>
+    <circle cx="90" cy="150" r="10"/><circle cx="92" cy="152" r="4.5" fill="#111" stroke="none"/>
+    <path d="M62 178 Q76 196 92 178 Z" fill="#111"/>
+    <path d="M75.0,15.0 L78.5,23.1 L87.4,24.0 L80.7,29.9 L82.6,38.5 L75.0,34.0 L67.4,38.5 L69.3,29.9 L62.6,24.0 L71.5,23.1 Z" fill="#111"/>
+    <!-- round tree buddy -->
+    <path d="M188 186 L185 262 L208 262 L205 186"/>
+    <path d="M150 140 C128 110 160 70 196 78 C228 58 266 96 250 130 C270 162 236 198 200 186 C168 202 132 176 150 140 Z"/>
+    <path d="M160 105 q8 -6 14 2 M232 160 q8 4 4 12" fill="none"/>
+    <circle cx="183" cy="126" r="9"/><circle cx="185" cy="128" r="4" fill="#111" stroke="none"/>
+    <path d="M204 126 q9 -9 18 0" fill="none"/>
+    <path d="M182 148 q20 20 40 0 Z" fill="#111"/>
+    <!-- ghost blob -->
+    <path d="M276 74 C270 30 330 30 324 74 L318 66 L310 76 L300 66 L290 76 L282 66 Z"/>
+    <path d="M290 50 l6 6 M296 50 l-6 6 M306 50 l6 6 M312 50 l-6 6" fill="none"/>
+    <!-- waving hand buddy -->
+    <path d="M290 246 C270 226 254 214 250 228 C247 240 268 256 292 268"/>
+    <path d="M286 300 C280 250 284 226 288 206 L288 128 C288 114 306 114 306 128 L306 192 L307 104 C307 90 325 90 325 104 L325 190 L327 112 C327 98 345 98 345 112 L345 194 L347 136 C347 122 365 122 365 136 L365 222 C365 254 356 280 350 300 Z"/>
+    <path d="M276 100 l-12 -12 M268 120 l-14 -4 M372 112 l12 -10 M378 132 l15 -2" fill="none"/>
+    <circle cx="312" cy="220" r="11"/><circle cx="314" cy="222" r="5" fill="#111" stroke="none"/>
+    <circle cx="342" cy="220" r="11"/><circle cx="344" cy="222" r="5" fill="#111" stroke="none"/>
+    <path d="M310 248 q17 18 34 0 Z" fill="#111"/>
+    <path d="M322 256 q6 8 12 0" fill="#fff" stroke-width="2.5"/>
+    <!-- paintbrush buddy -->
+    <g transform="translate(470 150) rotate(32)">
+      <rect x="-13" y="-118" width="26" height="128" rx="12"/>
+      <rect x="-15" y="8" width="30" height="24" rx="3"/>
+      <path d="M-15 16 h30 M-15 24 h30" fill="none"/>
+      <path d="M-16 32 C-22 62 -8 88 0 104 C8 88 22 62 16 32 Z" fill="#111"/>
+      <circle cx="-5" cy="-70" r="5.5"/><circle cx="-4" cy="-69" r="2.5" fill="#111" stroke="none"/>
+      <circle cx="7" cy="-70" r="5.5"/><circle cx="8" cy="-69" r="2.5" fill="#111" stroke="none"/>
+      <path d="M-5 -56 q6 7 12 0" fill="none"/>
+    </g>
+    <path d="M420 236 C414 246 414 252 420 252 C426 252 426 246 420 236 Z" fill="#111"/>
+    <path d="M408 262 C403.8 269.0 403.8 273.2 408 273.2 C412.2 273.2 412.2 269.0 408 262 Z" fill="#111"/>
+    <!-- stars, burst, bolt, mushroom -->
+    <path d="M250.0,26.0 L253.5,35.1 L263.3,35.7 L255.7,41.9 L258.2,51.3 L250.0,46.0 L241.8,51.3 L244.3,41.9 L236.7,35.7 L246.5,35.1 Z" fill="#111"/>
+    <path d="M420.0,41.0 L422.9,48.0 L430.5,48.6 L424.8,53.5 L426.5,60.9 L420.0,57.0 L413.5,60.9 L415.2,53.5 L409.5,48.6 L417.1,48.0 Z"/>
+    <path d="M575.0,32.0 L579.1,42.3 L590.2,43.1 L581.7,50.2 L584.4,60.9 L575.0,55.0 L565.6,60.9 L568.3,50.2 L559.8,43.1 L570.9,42.3 Z" fill="#111"/>
+    <path d="M140.0,31.0 L142.4,36.8 L148.6,37.2 L143.8,41.2 L145.3,47.3 L140.0,44.0 L134.7,47.3 L136.2,41.2 L131.4,37.2 L137.6,36.8 Z"/>
+    <path d="M565.2,100.5 L567.1,115.7 L580.4,108.0 L573.7,121.8 L589.0,122.5 L576.0,130.5 L588.5,139.4 L573.2,139.1 L578.9,153.3 L566.2,144.8 L563.3,159.8 L557.2,145.8 L546.7,156.9 L549.1,141.8 L534.3,145.4 L544.5,134.0 L530.0,129.0 L544.8,125.0 L535.3,113.0 L549.9,117.6 L548.4,102.3 L558.2,114.1 Z"/>
+    <path d="M585 172 L570 202 L584 202 L572 232 L598 194 L584 194 L596 172 Z" fill="#111"/>
+    <path d="M14 300 C10 268 60 268 56 300 Z"/>
+    <rect x="28" y="300" width="14" height="22" rx="4"/>
+    <circle cx="26" cy="288" r="4" fill="#111" stroke="none"/><circle cx="42" cy="282" r="5" fill="#111" stroke="none"/>
+    <path d="M128 300 c-10 -10 8 -22 14 -10 c4 10 -10 14 -10 6" fill="none"/>
+    <path d="M244 300 c-12 0 -12 -16 0 -16 c12 0 12 16 0 16 Z M240 290 l8 6" />
+  </g>
+</svg>
+            <span class="tlabel sticker">Off-screen</span>
+            <p class="tvalue sticker">Drawing, crafting by hand, walks in the park</p>
+            <span class="tcount sticker">08 / 08</span>
+          </li>
+        </ul>
         <div class="contact-list">
           <a class="u" href="mailto:nkhartskhaeva@gmail.com">nkhartskhaeva@gmail.com</a>
           <span>Belgrade, Serbia</span>
-          <a class="u" href="cv.pdf" target="_blank">Download CV (PDF)</a>
+          <a class="u" href="https://drive.google.com/file/d/1PxZ1Kvq5GiTxxw7GSG7w4yAlLsjGhA7I/view" target="_blank">Download CV (PDF)</a>
         </div>
       </div>
     </div>
@@ -285,12 +428,100 @@
 
 <footer>
   <nav>
-    <a class="u" href="https://www.linkedin.com/" target="_blank">LinkedIn</a><span class="sep">/</span>
-    <a class="u" href="cv.pdf" target="_blank">CV</a><span class="sep">/</span>
+    <a class="u" href="https://www.linkedin.com/in/namdzhil-khartskhaeva" target="_blank">LinkedIn</a><span class="sep">/</span>
+    <a class="u" href="https://drive.google.com/file/d/1PxZ1Kvq5GiTxxw7GSG7w4yAlLsjGhA7I/view" target="_blank">CV</a><span class="sep">/</span>
     <a class="u" href="mailto:nkhartskhaeva@gmail.com">Email</a>
   </nav>
   <span>© 2026 Namdzhil Khartskhaeva</span>
 </footer>
+
+<script>
+  // Tinder-style deck: auto-flips every 2s, tap to flip, drag/swipe to throw
+  (() => {
+    const deck = document.querySelector('.deck');
+    if (!deck) return;
+    const cards = [...deck.querySelectorAll('.tcard')];
+    let order = cards.map((_, i) => i);
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const layout = () => {
+      order.forEach((ci, pos) => {
+        const c = cards[ci];
+        c.dataset.pos = pos;
+        c.style.zIndex = cards.length - pos;
+        if (pos < 3) {
+          c.style.transform = `translateY(${pos * 14}px) scale(${1 - pos * 0.05})`;
+          c.style.opacity = 1;   // solid cards, so nothing shows through the top one
+        } else {
+          c.style.transform = 'translateY(28px) scale(.9)';
+          c.style.opacity = 0;
+        }
+        c.setAttribute('aria-hidden', pos === 0 ? 'false' : 'true');
+      });
+    };
+
+    let busy = false;
+    const flip = (dir = 1) => {
+      if (busy) return; busy = true;
+      const top = cards[order[0]];
+      top.style.transform = `translate(${dir * 120}%, -20px) rotate(${dir * 18}deg)`;
+      top.style.opacity = 0;
+      setTimeout(() => {
+        order.push(order.shift());          // top card goes to the back
+        top.classList.add('dragging');      // jump to the back without animating
+        layout();
+        top.offsetHeight;
+        top.classList.remove('dragging');
+        busy = false;
+      }, 380);
+    };
+
+    // Autoplay every 2 seconds, paused while dragging or off-screen
+    let timer = null, visible = true, holding = false;
+    const start = () => { stop(); if (!reduced && visible && !holding) timer = setInterval(() => flip(1), 2000); };
+    const stop = () => { clearInterval(timer); timer = null; };
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; start(); }).observe(deck);
+
+    // Drag / swipe / tap
+    let sx = 0, sy = 0, dx = 0, moved = false;
+    deck.addEventListener('pointerdown', (e) => {
+      if (busy) return;
+      const top = cards[order[0]];
+      if (!top.contains(e.target)) return;
+      holding = true; stop();
+      sx = e.clientX; sy = e.clientY; dx = 0; moved = false;
+      top.classList.add('dragging');
+      deck.setPointerCapture(e.pointerId);
+    });
+    deck.addEventListener('pointermove', (e) => {
+      if (!holding) return;
+      dx = e.clientX - sx;
+      const dy = (e.clientY - sy) * 0.2;
+      if (Math.abs(dx) > 5) moved = true;
+      cards[order[0]].style.transform = `translate(${dx}px, ${dy}px) rotate(${dx / 14}deg)`;
+    });
+    const release = () => {
+      if (!holding) return;
+      holding = false;
+      const top = cards[order[0]];
+      top.classList.remove('dragging');
+      if (!moved) flip(1);                          // tap
+      else if (Math.abs(dx) > 90) flip(Math.sign(dx)); // thrown
+      else layout();                                // snap back
+      start();
+    };
+    deck.addEventListener('pointerup', release);
+    deck.addEventListener('pointercancel', release);
+
+    deck.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { flip(1); start(); }
+      if (e.key === 'ArrowLeft') { flip(-1); start(); }
+    });
+
+    layout();
+    start();
+  })();
+</script>
 
 <!-- 3D chrome ornament -->
 <script type="importmap">
