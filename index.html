@@ -108,7 +108,7 @@
   }
   .job-meta h3 { font-size: 24px; font-weight: 500; letter-spacing: -0.01em; }
   .job-meta span { color: var(--muted); }
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+  .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
   .card { display: block; text-decoration: none; }
   .cover {
     aspect-ratio: 16 / 10; border-radius: 16px; overflow: hidden;
@@ -348,7 +348,7 @@
 
       const float T  = 0.20;   // tube thickness
       const float RR = 0.50;   // ring radius
-      const float RS = 1.55;   // sphere radius
+      const float RS = 0.78;   // sphere radius (half the old size)
 
       float smin(float a, float b, float k){
         float h = clamp(0.5 + 0.5*(b - a)/k, 0.0, 1.0);
@@ -378,7 +378,7 @@
         float d = mix(ornament(p), length(p) - RS, uMorph);
         // liquid wobble only while transforming
         float w = uMorph*(1.0 - uMorph);
-        d += w*0.22*sin(4.0*p.x + uTime*3.0)*sin(4.0*p.y - uTime*2.0)*sin(4.0*p.z + uTime*2.5);
+        d += w*0.07*sin(3.0*p.x + uTime*1.2)*sin(3.0*p.y - uTime*0.9)*sin(3.0*p.z + uTime*1.0);
         return d;
       }
       vec3 calcNormal(vec3 p){
@@ -431,6 +431,16 @@
         vec3 holo = mix(holoEnv, holoEnv*0.6 + iri*0.55, 0.4);
 
         vec3 col = mix(chrome, holo, uMix);
+
+        // Pearl: soft milky base, satin sheen and a faint pink-mint nacre shimmer
+        vec3 L = normalize(vec3(0.4, 0.6, 0.7));
+        float diff = 0.72 + 0.28*max(dot(nw, L), 0.0);
+        vec3 pearlBase = vec3(0.97, 0.95, 0.93)*diff;
+        vec3 nacre = 0.5 + 0.5*cos(6.28318*(fres*0.9 + dot(n, vec3(0.2, 0.4, 0.3))*0.35 + vec3(0.0, 0.33, 0.67) + 0.15));
+        vec3 pearl = mix(pearlBase, pearlBase*0.82 + nacre*0.22, 0.55)
+                   + env(uEnvA, rw)*0.08
+                   + pow(max(dot(rw, L), 0.0), 18.0)*0.22;
+        col = mix(col, min(pearl, vec3(1.0)), smoothstep(0.35, 1.0, uMorph));
         col += fres*0.18;                                              // glossy rim
         col += pow(max(dot(rw, normalize(vec3(0.4, 0.6, 0.7))), 0.0), 60.0)*0.6;  // specular kick
         col = min(col, vec3(1.0));
@@ -456,7 +466,7 @@
   new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(box);
 
   const slow = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const speed = slow ? 0.15 : 0.55;
+  const speed = slow ? 0.12 : 0.32;
   const smooth = (a, b, x) => { const k = Math.min(Math.max((x - a)/(b - a), 0), 1); return k*k*(3 - 2*k); };
   const euler = new THREE.Euler(), m4 = new THREE.Matrix4();
   const clock = new THREE.Clock();
@@ -467,11 +477,11 @@
     const angle = t * speed;
     const phase = angle % (Math.PI * 2);
 
-    euler.set(Math.sin(t * 0.4) * 0.12, angle, 0);
+    euler.set(Math.sin(t * 0.25) * 0.08, angle, 0);
     m4.makeRotationFromEuler(euler);
     uniforms.uR.value.setFromMatrix4(m4);
     uniforms.uRi.value.copy(uniforms.uR.value).transpose();
-    uniforms.uLift.value = Math.sin(t * 0.8) * 0.06;
+    uniforms.uLift.value = Math.sin(t * 0.5) * 0.05;
     uniforms.uTime.value = t;
 
     // Silver facing front → holographic after half a turn → back to silver
@@ -480,7 +490,8 @@
 
     // Once per turn: melt into a sphere around the half-turn, then back into the ornament
     const P = Math.PI;
-    uniforms.uMorph.value = smooth(0.55 * P, 0.85 * P, phase) * (1 - smooth(1.15 * P, 1.45 * P, phase));
+    const ease = (x) => x * x * x * (x * (x * 6 - 15) + 10);   // smootherstep: no visible start/stop
+    uniforms.uMorph.value = ease(smooth(0.35 * P, 0.9 * P, phase)) * (1 - ease(smooth(1.1 * P, 1.65 * P, phase)));
 
     renderer.render(scene, cam);
   });
